@@ -1726,7 +1726,7 @@ function makeBed(ox){
     let tip;
     if(dir==='x'){cy.rotation.z=-Math.PI/2;cy.position.x=12.5;co.rotation.z=-Math.PI/2;co.position.x=28;tip=[38,0,0];}
     else if(dir==='y'){cy.position.y=12.5;co.position.y=28;tip=[0,38,0];}
-    else{cy.rotation.x=Math.PI/2;cy.position.z=-12.5;co.rotation.x=Math.PI/2;co.position.z=-28;tip=[0,0,-38];}
+    else{cy.rotation.x=Math.PI/2;cy.position.z=-12.5;co.rotation.x=-Math.PI/2;co.position.z=-28;tip=[0,0,-38];}
     a.add(cy,co);
     const sp=axisNameSprite(lbl,color);
     sp.position.set(tip[0],tip[1],tip[2]);
