@@ -3,6 +3,17 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <meta name="description" content="PrintQuote3D — calculator instant de preț pentru imprimare 3D pe Prusa MK4. Încarcă modelul STL/STEP/OBJ, alege materialul și primește oferta de preț rapid.">
+  <meta name="keywords" content="imprimare 3D, print 3D, ofertă preț 3D, Prusa MK4, calculator preț imprimare 3D, STL, slicer online, printare 3D România">
+  <meta name="robots" content="index, follow">
+  <meta name="google-site-verification" content="Biw1VIQfUf0M2DQRdAOu9IPz_RFYc2I2YqERYeXB9qo" />
+  <meta name="author" content="PrintQuote3D">
+  <link rel="canonical" href="https://shopbunea-glitch.github.io/printquote3d/">
+  <!-- Open Graph pentru partajare pe rețele sociale -->
+  <meta property="og:title" content="PrintQuote3D — Ofertă instant imprimare 3D Prusa MK4">
+  <meta property="og:description" content="Încarcă modelul 3D și primește oferta de preț pentru imprimare pe Prusa MK4.">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://shopbunea-glitch.github.io/printquote3d/">
 <title>PrintQuote3D — Prusa MK4 Slicer</title>
 <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600&family=Barlow+Condensed:wght@600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
@@ -440,45 +451,62 @@ body.surface-pick-mode #vp canvas{cursor:crosshair}
   font-size:22px;cursor:pointer;box-shadow:0 4px 16px rgba(0,0,0,.6)}
 @media (max-width: 820px){
   html{font-size:13px}
-  /* Toolbar: horizontal scroll, full width */
+  /* Header compact */
+  #hdr{height:30px;gap:6px;padding:0 8px}
+  #hdr .logo{font-size:13px}
+  /* Toolbar: bandă orizontală scrollabilă, lățime completă, centrată sus */
   #tb{
-    top:4px;left:4px;right:4px;transform:none;width:auto;height:64px;
-    overflow-x:auto;overflow-y:hidden;height:60px;
+    position:fixed;top:38px;left:4px;right:4px;
+    transform:none;width:auto;max-width:none;
+    height:54px;border-radius:9px;padding:0 4px;
+    overflow-x:auto;overflow-y:hidden;
     -webkit-overflow-scrolling:touch;scrollbar-width:none;
   }
   #tb::-webkit-scrollbar{display:none}
-  .tb{min-width:54px;flex-shrink:0}
+  .tb{min-width:50px;flex-shrink:0}
   .tb .L{font-size:8px}
-  .tb svg{width:18px;height:18px}
+  .tb svg{width:17px;height:17px}
   .tt{display:none!important}
-  #hdr{margin-top:68px;height:30px;gap:6px;padding:0 8px}
-  #hdr .logo{font-size:13px}
-  /* Right panel: slide-over drawer */
-  #rpanel{
-    position:fixed;top:0;right:0;bottom:0;width:min(86vw,340px);z-index:350;
-    transform:translateX(100%);transition:transform .25s ease;
+  /* Layout: viewport pe tot ecranul, panoul devine sertar peste el */
+  #main{flex-direction:column;padding-top:96px}
+  #vp{flex:1;min-height:40vh}
+  #rp{
+    --rpw:min(90vw,360px);
+    position:fixed;top:0;right:0;bottom:0;width:var(--rpw);
+    z-index:350;border-left:1px solid var(--b1);
+    transform:translateX(100%);transition:transform .26s ease;
     box-shadow:-8px 0 28px rgba(0,0,0,.6);
   }
-  #rpanel.mob-open{transform:translateX(0)}
-  #rpanelToggle{display:block}
+  #rp.mob-open{transform:translateX(0)}
+  /* Taburile panoului mereu vizibile când e deschis */
+  #rp .rtab{padding:14px 2px}
+  #rpanelToggle{display:flex;align-items:center;justify-content:center}
+  /* Buton închidere sertar */
+  #rpClose{display:flex}
   /* Status bar compact */
-  #sb{font-size:9px;padding:0 6px;height:24px}
+  #sb{font-size:9px;padding:0 6px;height:24px;flex-wrap:wrap;overflow:hidden}
   #sb>*{white-space:nowrap}
-  /* HUD + delta smaller */
+  /* HUD */
   #deltaHUD{font-size:10px;padding:5px 10px;bottom:70px}
   #gizmoInfo{font-size:9px}
-  /* View bar bottom */
   #vbar{bottom:6px}
-  /* Email modal full-screen */
-  .emodal{width:94vw!important;max-width:none!important;max-height:88vh;overflow-y:auto}
-  /* Touch-friendly inputs */
-  .fin,select,.einp{min-height:34px}
+  /* Modale aproape full-screen */
+  #em .mbox,#psm .mbox,#qm .mbox{width:94vw!important;max-width:none!important;max-height:88vh;overflow-y:auto}
+  /* Inputuri prietenoase cu degetul */
+  .fin,select,.einp,.cpi,.cqi,.xi{min-height:32px}
   .mat-trigger{padding:11px 12px}
+  /* Welcome box mai mic ca să nu acopere */
+  #upZone{transform:scale(.82);transform-origin:center}
 }
 @media (max-width: 480px){
-  .tb{min-width:48px}
-  #hdr .ver{display:none}
+  .tb{min-width:46px}
+  #hdr .hi{display:none}
+  #rp{--rpw:94vw}
 }
+#rpClose{display:none;position:absolute;top:9px;right:10px;z-index:5;
+  width:30px;height:30px;border-radius:6px;border:1px solid var(--b2);
+  background:var(--card);color:var(--tx);font-size:15px;cursor:pointer;
+  align-items:center;justify-content:center}
 
 /* ─── TOAST ─── */
 #toast{position:fixed;bottom:32px;left:50%;transform:translateX(-50%);
@@ -791,6 +819,7 @@ body.surface-pick-mode #vp canvas{cursor:crosshair}
 
   <!-- RIGHT PANEL -->
   <div id="rp">
+    <button id="rpClose" onclick="toggleRPanel()">✕</button>
     <div class="rtabs">
       <div class="rtab on" onclick="showTab(0)">Plasare</div>
       <div class="rtab" onclick="showTab(1)">Suport</div>
@@ -806,7 +835,7 @@ body.surface-pick-mode #vp canvas{cursor:crosshair}
           <div class="mat-trigger" id="matTrigger" onclick="toggleMatDD()">
             <div class="mat-trigger-dot" id="matTriggerDot" style="background:#2196f3"></div>
             <div class="mat-trigger-name" id="matTriggerName">PETG</div>
-            <div class="mat-trigger-price" id="matTriggerPrice">163 RON/kg · ρ1.27</div>
+            <div class="mat-trigger-price" id="matTriggerPrice"></div>
             <div class="mat-trigger-arrow" id="matTriggerArr">▼</div>
           </div>
           <div class="mat-dlist" id="matDList"></div>
@@ -1277,7 +1306,7 @@ function initControls(cv){
       }
     }
     if(e.button===0)orb.dn=true;
-    if(e.button===1||e.button===2)orb.rt=true; if(e.button===1)e.preventDefault();
+    if(e.button===1||e.button===2){orb.rt=true; orb.mid=(e.button===1);} if(e.button===1)e.preventDefault();
     orb.lx=e.clientX;orb.ly=e.clientY;
     document.getElementById('vp').classList.add('drag');
   });
@@ -1347,7 +1376,13 @@ function initControls(cv){
     if(orb.dn){orb.theta-=dx*.33;orb.phi=Math.max(2,Math.min(178,orb.phi+dy*.33));}
     else{
       const sp=orb.r*.0006,th=orb.theta*Math.PI/180;
-      orb.tx-=Math.sin(th)*dx*sp;orb.tz+=Math.cos(th)*dx*sp;orb.ty+=dy*sp*.6;
+      if(orb.mid){
+        // Click mijloc: translație DOAR pe planul X/Z (Y blocat)
+        orb.tx-=Math.sin(th)*dx*sp; orb.tz+=Math.cos(th)*dx*sp;
+        orb.tx-=Math.cos(th)*dy*sp; orb.tz-=Math.sin(th)*dy*sp;
+      } else {
+        orb.tx-=Math.sin(th)*dx*sp; orb.tz+=Math.cos(th)*dx*sp; orb.ty+=dy*sp*.6;
+      }
     }
     updateCam();
   });
@@ -1361,7 +1396,7 @@ function initControls(cv){
     document.getElementById('deltaHUD').style.display='none';
     if(wasDraggingGiz && selMesh){ checkBedBounds(selMesh); }
     if(!moved&&orb.dn) trySelect(e);
-    orb.dn=false; orb.rt=false;
+    orb.dn=false; orb.rt=false; orb.mid=false;
     document.getElementById('vp').classList.remove('drag');
     hovAxis=null; updateGizmoHighlight(null);
   });
@@ -1785,6 +1820,10 @@ function placeMeshOnBed(mesh){
 }
 
 function onLoaded(){
+  if(window.innerWidth<=820){
+    const rp=document.getElementById('rp');
+    if(rp && !rp.classList.contains('mob-open')) toggleRPanel();
+  }
   document.getElementById('upZone').classList.add('h');
   document.getElementById('vbar').classList.add('on');
   document.getElementById('vpf').style.display='flex';
@@ -2169,7 +2208,7 @@ function pickView(v){
 }
 
 function toggleRPanel(){
-  const rp=document.getElementById('rpanel');
+  const rp=document.getElementById('rp');
   if(rp)rp.classList.toggle('mob-open');
   const btn=document.getElementById('rpanelToggle');
   if(btn)btn.textContent=rp?.classList.contains('mob-open')?'✕':'☰';
@@ -2439,7 +2478,6 @@ function buildMats(){
   document.getElementById('matGrid').innerHTML=Object.entries(MATS).map(([k,m])=>`
     <button class="mb${S.mat===k?' on':''}" onclick="selMat('${k}')">
       <div class="mt"><div class="md" style="background:${m.c}"></div><div class="mn">${k}</div></div>
-      <div class="mp">${m.kg} RON/kg · ρ${m.d}</div>
     </button>`).join('');
 }
 function selMat(k){S.mat=k;buildMats();refreshCost();}
@@ -2599,7 +2637,6 @@ function buildMatDD(){
     <div class="mat-ditem${S.mat===k?' on':''}" onclick="selMat('${k}')">
       <div class="mat-trigger-dot" style="background:${m.c}"></div>
       <div class="mn">${k}</div>
-      <div class="mp">${m.kg} RON/kg · ρ${m.d}</div>
     </div>`).join('');
 }
 
@@ -2610,7 +2647,7 @@ function selMat(k){
   const m=MATS[k];
   const d=document.getElementById('matTriggerDot'); if(d)d.style.background=m.c;
   const n=document.getElementById('matTriggerName'); if(n)n.textContent=k;
-  const p=document.getElementById('matTriggerPrice'); if(p)p.textContent=`${m.kg} RON/kg · ρ${m.d}`;
+  const p=document.getElementById('matTriggerPrice'); if(p)p.textContent='';
   // Close dropdown
   const list=document.getElementById('matDList'); if(list)list.classList.remove('open');
   const trig=document.getElementById('matTrigger'); if(trig)trig.classList.remove('open');
